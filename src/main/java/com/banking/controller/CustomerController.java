@@ -44,7 +44,7 @@ public class CustomerController {
                 "created-topup-topic");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Money is transferred successfully"));
+                .body(new GenericResponse("Your  request is being processed"));
     }
 
 
@@ -64,7 +64,7 @@ public class CustomerController {
                 "created-purchase-topic");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Money is transferred successfully"));
+                .body(new GenericResponse("Your  request is being processed"));
     }
 
 
@@ -74,7 +74,7 @@ public class CustomerController {
         transactionServiceInter.createRefund(id);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Refund is done  successfully"));
+                .body(new GenericResponse("Your  request is being processed"));
     }
 
 
