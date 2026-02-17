@@ -1,9 +1,6 @@
 package com.banking.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -23,4 +20,6 @@ public class Customer extends BaseEntity {
     private LocalDate birthDate;
     private String gsmNumber;
     private BigDecimal balance;
+    @Version
+    private Long version;
 }
