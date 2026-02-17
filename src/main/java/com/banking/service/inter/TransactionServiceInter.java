@@ -3,7 +3,10 @@ package com.banking.service.inter;
 import com.banking.dto.event.Event;
 import com.banking.dto.request.PurchaseRequest;
 import com.banking.dto.request.TopUpRequest;
+import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Transaction;
+
+import java.util.List;
 
 public interface TransactionServiceInter {
 
@@ -26,4 +29,7 @@ public interface TransactionServiceInter {
 
     void refund(Event event);
 
-}
+    List<TransactionResponseDto> getCustomerTransaction(Long customerId);
+
+
+    }

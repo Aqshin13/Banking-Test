@@ -6,6 +6,7 @@ import com.banking.dao.TransactionRepository;
 import com.banking.dto.event.Event;
 import com.banking.dto.request.PurchaseRequest;
 import com.banking.dto.request.TopUpRequest;
+import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Customer;
 import com.banking.entity.Transaction;
 import com.banking.exception.CustomerNotFound;
@@ -17,6 +18,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +45,8 @@ public class TransactionServiceImpl implements TransactionServiceInter {
     }
 
 
+
+    @Override
     public void createTopUp(TopUpRequest requestDto
             , Transaction.TransactionType type, String topicName) {
         Transaction transaction = new Transaction();
@@ -62,6 +66,7 @@ public class TransactionServiceImpl implements TransactionServiceInter {
         producer.send(topicName, topUpCreateEvent);
     }
 
+    @Override
     public void createPurchase(PurchaseRequest requestDto
             , Transaction.TransactionType type, String topicName) {
         Transaction transaction = new Transaction();
@@ -79,23 +84,6 @@ public class TransactionServiceImpl implements TransactionServiceInter {
         );
         System.out.println(transactionDB.getId());
         producer.send(topicName, topUpCreateEvent);
-    }
-
-
-    @Transactional(rollbackOn = Exception.class)
-    public void purchase(Event event) {
-        process(event);
-    }
-
-    @Transactional(rollbackOn = Exception.class)
-    public void transfer(Event event) {
-        process(event);
-    }
-
-    @Override
-    @Transactional(rollbackOn = Exception.class)
-    public void refund(Event event) {
-        process(event);
     }
 
     @Override
@@ -125,6 +113,34 @@ public class TransactionServiceImpl implements TransactionServiceInter {
         producer.send("created-refund-topic", refundEvent);
 
 
+    }
+
+
+    @Transactional(rollbackOn = Exception.class)
+    @Override
+    public void purchase(Event event) {
+        process(event);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    @Override
+    public void transfer(Event event) {
+        process(event);
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public void refund(Event event) {
+        process(event);
+    }
+
+
+    public List<TransactionResponseDto> getCustomerTransaction(Long customerId){
+       return transactionRepository.findCustomerTransaction(customerId).stream()
+                .map(x-> new TransactionResponseDto(
+                        x.getId(),x.getSender(),x.getReceiver(),x.getType(),x.getAmount(),
+                        x.getStatus(),x.isRefund()
+                )).toList();
     }
 
 

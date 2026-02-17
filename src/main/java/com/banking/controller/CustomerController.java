@@ -1,11 +1,11 @@
 package com.banking.controller;
 
 
-import com.banking.dto.request.MoneyTransferRequest;
 import com.banking.dto.request.CustomerSaveRequest;
 import com.banking.dto.request.PurchaseRequest;
 import com.banking.dto.request.TopUpRequest;
 import com.banking.dto.response.GenericResponse;
+import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Transaction;
 import com.banking.service.inter.CustomerServiceInter;
 import com.banking.service.inter.TransactionServiceInter;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -74,6 +75,12 @@ public class CustomerController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new GenericResponse("Refund is done  successfully"));
+    }
+
+
+    @GetMapping("/{id}/transactions")
+    public List<TransactionResponseDto> getCustomerTransaction(@PathVariable Long id){
+        return transactionServiceInter.getCustomerTransaction(id);
     }
 
 
