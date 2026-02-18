@@ -37,14 +37,9 @@ public class CustomerController {
     }
 
 
-    @PostMapping("/money/transfer")
-    public ResponseEntity<GenericResponse> topUp(@RequestBody @Valid MoneyTransferRequest request) {
-        transactionServiceInter.createTransfer(request,
-                Transaction.TransactionType.TOP_UP,
-                TopicName.TOPUP_TOPIC.getName());
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Your  request is being processed"));
+    @GetMapping("/{id}/transactions")
+    public List<TransactionResponseDto> getCustomerTransaction(@PathVariable Long id) {
+        return transactionServiceInter.getCustomerTransaction(id);
     }
 
 
@@ -58,30 +53,6 @@ public class CustomerController {
                 .body(new GenericResponse("Balance: " + balance));
     }
 
-    @PostMapping("/purchase")
-    public ResponseEntity<GenericResponse> purchase(@RequestBody @Valid MoneyTransferRequest request) {
-        transactionServiceInter.createTransfer(request,
-                Transaction.TransactionType.PURCHASE,
-                TopicName.PURCHASE.getName());
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Your  request is being processed"));
-    }
-
-
-    @PostMapping("/refund/purchase/{id}")
-    public ResponseEntity<GenericResponse> refund(@PathVariable Long id) {
-        transactionServiceInter.createRefund(id);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Your  request is being processed"));
-    }
-
-
-    @GetMapping("/{id}/transactions")
-    public List<TransactionResponseDto> getCustomerTransaction(@PathVariable Long id) {
-        return transactionServiceInter.getCustomerTransaction(id);
-    }
 
 
 }

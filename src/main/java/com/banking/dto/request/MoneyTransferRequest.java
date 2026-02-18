@@ -22,7 +22,6 @@ public record MoneyTransferRequest(@NotNull
                                            description = "Receiver id", example = "2"
                                    )
                                    Long receiverId,
-                                   @Positive(message = "Menfi pul miqdari ola bilmez")
                                    @NotNull
                                    @PositiveOrZero(message = "Menfi ola bilmez")
                                    @Schema(
