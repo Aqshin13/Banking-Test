@@ -2,8 +2,8 @@ package com.banking.controller;
 
 
 import com.banking.dto.request.CustomerSaveRequest;
+import com.banking.dto.request.MoneyTransferRequest;
 import com.banking.dto.request.PurchaseRequest;
-import com.banking.dto.request.TopUpRequest;
 import com.banking.dto.response.GenericResponse;
 import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Transaction;
@@ -39,8 +39,8 @@ public class CustomerController {
 
 
     @PostMapping("/money/transfer")
-    public ResponseEntity<GenericResponse> topUp(@RequestBody @Valid TopUpRequest request ){
-        transactionServiceInter.createTopUp(request, Transaction.TransactionType.TOP_UP,
+    public ResponseEntity<GenericResponse> topUp(@RequestBody @Valid MoneyTransferRequest request ){
+        transactionServiceInter.createTransfer(request, Transaction.TransactionType.TOP_UP,
                 "created-topup-topic");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -59,8 +59,8 @@ public class CustomerController {
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity<GenericResponse> purchase(@RequestBody @Valid PurchaseRequest request ){
-        transactionServiceInter.createPurchase(request, Transaction.TransactionType.PURCHASE,
+    public ResponseEntity<GenericResponse> purchase(@RequestBody @Valid MoneyTransferRequest request ){
+        transactionServiceInter.createTransfer(request, Transaction.TransactionType.PURCHASE,
                 "created-purchase-topic");
         return ResponseEntity
                 .status(HttpStatus.CREATED)

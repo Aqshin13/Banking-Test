@@ -1,6 +1,6 @@
 package com.banking.util.annotation;
 
-import com.banking.util.validator.CheckBalanceValidatorToPurchase;
+import com.banking.util.validator.CheckBalanceValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Constraint(
-        validatedBy = {CheckBalanceValidatorToPurchase.class}
+        validatedBy = {CheckBalanceValidator.class}
 )
 @Target({ ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

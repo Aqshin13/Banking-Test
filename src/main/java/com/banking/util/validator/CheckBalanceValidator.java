@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
-public class CheckBalanceValidatorToPurchase implements ConstraintValidator<CheckBalance, PurchaseRequest> {
+public class CheckBalanceValidator implements ConstraintValidator<CheckBalance, PurchaseRequest> {
 
     private final CustomerRepository repository;
 

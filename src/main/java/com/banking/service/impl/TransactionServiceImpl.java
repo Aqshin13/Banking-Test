@@ -4,8 +4,7 @@ package com.banking.service.impl;
 import com.banking.dao.CustomerRepository;
 import com.banking.dao.TransactionRepository;
 import com.banking.dto.event.Event;
-import com.banking.dto.request.PurchaseRequest;
-import com.banking.dto.request.TopUpRequest;
+import com.banking.dto.request.MoneyTransferRequest;
 import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Customer;
 import com.banking.entity.Transaction;
@@ -45,9 +44,8 @@ public class TransactionServiceImpl implements TransactionServiceInter {
     }
 
 
-
     @Override
-    public void createTopUp(TopUpRequest requestDto
+    public void createTransfer(MoneyTransferRequest requestDto
             , Transaction.TransactionType type, String topicName) {
         Transaction transaction = new Transaction();
         transaction.setReceiver(requestDto.receiverId());
@@ -66,31 +64,12 @@ public class TransactionServiceImpl implements TransactionServiceInter {
         producer.send(topicName, topUpCreateEvent);
     }
 
-    @Override
-    public void createPurchase(PurchaseRequest requestDto
-            , Transaction.TransactionType type, String topicName) {
-        Transaction transaction = new Transaction();
-        transaction.setReceiver(requestDto.receiverId());
-        transaction.setSender(requestDto.senderId());
-        transaction.setAmount(requestDto.amount());
-        transaction.setStatus(Transaction.TransactionStatus.PROCESSING);
-        transaction.setType(type);
-        Transaction transactionDB = transactionRepository.save(transaction);
-        Event topUpCreateEvent = new Event(
-                transactionDB.getId(),
-                transactionDB.getSender(),
-                transactionDB.getReceiver(),
-                transactionDB.getAmount()
-        );
-        System.out.println(transactionDB.getId());
-        producer.send(topicName, topUpCreateEvent);
-    }
 
     @Override
     public void createRefund(Long id) {
         Transaction transaction =
                 transactionRepository.getTransaction(id).orElseThrow(
-                        ()-> new TransactionNotFound("Transaction is not found")
+                        () -> new TransactionNotFound("Transaction is not found")
                 );
         Transaction transactionNew = new Transaction();
         transactionNew.setReceiver(transaction.getSender());
@@ -135,11 +114,11 @@ public class TransactionServiceImpl implements TransactionServiceInter {
     }
 
 
-    public List<TransactionResponseDto> getCustomerTransaction(Long customerId){
-       return transactionRepository.findCustomerTransaction(customerId).stream()
-                .map(x-> new TransactionResponseDto(
-                        x.getId(),x.getSender(),x.getReceiver(),x.getType(),x.getAmount(),
-                        x.getStatus(),x.isRefund()
+    public List<TransactionResponseDto> getCustomerTransaction(Long customerId) {
+        return transactionRepository.findCustomerTransaction(customerId).stream()
+                .map(x -> new TransactionResponseDto(
+                        x.getId(), x.getSender(), x.getReceiver(), x.getType(), x.getAmount(),
+                        x.getStatus(), x.isRefund()
                 )).toList();
     }
 
