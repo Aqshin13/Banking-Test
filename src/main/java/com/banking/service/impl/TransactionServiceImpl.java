@@ -1,6 +1,7 @@
 package com.banking.service.impl;
 
 
+import com.banking.config.TopicName;
 import com.banking.dao.CustomerRepository;
 import com.banking.dao.TransactionRepository;
 import com.banking.dto.event.Event;
@@ -89,7 +90,7 @@ public class TransactionServiceImpl implements TransactionServiceInter {
                 transactionDB.getReceiver(),
                 transactionDB.getAmount()
         );
-        producer.send("created-refund-topic", refundEvent);
+        producer.send(TopicName.REFUND.getName(), refundEvent);
 
 
     }

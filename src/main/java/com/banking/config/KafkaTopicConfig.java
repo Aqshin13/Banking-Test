@@ -11,21 +11,21 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic topicTopUp(){
-        return TopicBuilder.name("created-topup-topic")
+        return TopicBuilder.name(TopicName.TOPUP_TOPIC.getName())
                 .build();
     }
 
 
     @Bean
     public NewTopic topicPurchase(){
-        return TopicBuilder.name("created-purchase-topic")
+        return TopicBuilder.name(TopicName.PURCHASE.getName())
                 .build();
     }
 
 
     @Bean
     public NewTopic topicRefund(){
-        return TopicBuilder.name("created-refund-topic")
+        return TopicBuilder.name(TopicName.REFUND.getName())
                 .build();
     }
 

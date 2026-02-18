@@ -1,9 +1,9 @@
 package com.banking.controller;
 
 
+import com.banking.config.TopicName;
 import com.banking.dto.request.CustomerSaveRequest;
 import com.banking.dto.request.MoneyTransferRequest;
-import com.banking.dto.request.PurchaseRequest;
 import com.banking.dto.response.GenericResponse;
 import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Transaction;
@@ -29,7 +29,7 @@ public class CustomerController {
 
 
     @PostMapping
-    public ResponseEntity<GenericResponse> save(@RequestBody @Valid CustomerSaveRequest request ){
+    public ResponseEntity<GenericResponse> save(@RequestBody @Valid CustomerSaveRequest request) {
         customerServiceInter.save(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -37,11 +37,11 @@ public class CustomerController {
     }
 
 
-
     @PostMapping("/money/transfer")
-    public ResponseEntity<GenericResponse> topUp(@RequestBody @Valid MoneyTransferRequest request ){
-        transactionServiceInter.createTransfer(request, Transaction.TransactionType.TOP_UP,
-                "created-topup-topic");
+    public ResponseEntity<GenericResponse> topUp(@RequestBody @Valid MoneyTransferRequest request) {
+        transactionServiceInter.createTransfer(request,
+                Transaction.TransactionType.TOP_UP,
+                TopicName.TOPUP_TOPIC.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new GenericResponse("Your  request is being processed"));
@@ -49,28 +49,28 @@ public class CustomerController {
 
 
     @GetMapping("/{id}/balance")
-    public ResponseEntity<GenericResponse> topUp(@PathVariable Long id ){
+    public ResponseEntity<GenericResponse> topUp(@PathVariable Long id) {
 
-       BigDecimal balance= customerServiceInter.getBalance(id);
+        BigDecimal balance = customerServiceInter.getBalance(id);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new GenericResponse("Balance: "+balance));
+                .body(new GenericResponse("Balance: " + balance));
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity<GenericResponse> purchase(@RequestBody @Valid MoneyTransferRequest request ){
-        transactionServiceInter.createTransfer(request, Transaction.TransactionType.PURCHASE,
-                "created-purchase-topic");
+    public ResponseEntity<GenericResponse> purchase(@RequestBody @Valid MoneyTransferRequest request) {
+        transactionServiceInter.createTransfer(request,
+                Transaction.TransactionType.PURCHASE,
+                TopicName.PURCHASE.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new GenericResponse("Your  request is being processed"));
     }
 
 
-
     @PostMapping("/refund/purchase/{id}")
-    public ResponseEntity<GenericResponse> refund(@PathVariable Long id){
+    public ResponseEntity<GenericResponse> refund(@PathVariable Long id) {
         transactionServiceInter.createRefund(id);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -79,11 +79,9 @@ public class CustomerController {
 
 
     @GetMapping("/{id}/transactions")
-    public List<TransactionResponseDto> getCustomerTransaction(@PathVariable Long id){
+    public List<TransactionResponseDto> getCustomerTransaction(@PathVariable Long id) {
         return transactionServiceInter.getCustomerTransaction(id);
     }
-
-
 
 
 }
