@@ -28,13 +28,14 @@ public class TransactionServiceImpl implements TransactionServiceInter {
     private final TransactionRepository transactionRepository;
     private final KafkaTemplate<String, Event> producer;
 
+
     private void process(Event event) {
         Customer sender = repository.findById(event.senderId())
                 .orElseThrow(() -> new CustomerNotFound("Sender is not found"));
         Customer receiver = repository.findById(event.receiverId())
                 .orElseThrow(() -> new CustomerNotFound("Receiver is not found"));
         Transaction transaction = transactionRepository
-                .getReferenceById(event.transactionId());
+                .findById(event.transactionId()).orElseThrow(()->new TransactionNotFound("Transation is not found"));
         sender.setBalance(sender.getBalance().subtract(event.amount()));
         receiver.setBalance(receiver.getBalance().add(event.amount()));
         repository.save(sender);

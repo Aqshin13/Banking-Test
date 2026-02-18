@@ -25,6 +25,7 @@ public class MyKafkaConsumer {
         try {
             transactionServiceInter.transfer(event);
         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
             onFAILED(event);
 
         }

@@ -2,7 +2,6 @@ package com.banking.service.inter;
 
 import com.banking.dto.event.Event;
 import com.banking.dto.request.MoneyTransferRequest;
-import com.banking.dto.request.PurchaseRequest;
 import com.banking.dto.response.TransactionResponseDto;
 import com.banking.entity.Transaction;
 
