@@ -37,13 +37,7 @@
                 , groupId = "consumer-group"
         )
         public void transferMoney(Event event) {
-            try {
                 transactionServiceInter.transfer(event);
-            } catch (Exception exception) {
-                System.out.println(exception.getMessage());
-                onFAILED(event);
-
-            }
         }
 
 
@@ -58,12 +52,7 @@
                 , groupId = "consumer-group"
         )
         public void purchase(Event event) {
-            try {
                 transactionServiceInter.purchase(event);
-            } catch (Exception exception) {
-                onFAILED(event);
-
-            }
         }
 
 
@@ -78,12 +67,7 @@
                 , groupId = "consumer-group"
         )
         public void refund(Event event) {
-            try {
                 transactionServiceInter.refund(event);
-            } catch (Exception exception) {
-                onFAILED(event);
-
-            }
         }
 
 
