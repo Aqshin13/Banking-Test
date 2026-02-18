@@ -1,7 +1,7 @@
 package com.banking.util.validator;
 
 import com.banking.dao.CustomerRepository;
-import com.banking.dto.request.PurchaseRequest;
+import com.banking.dto.request.MoneyTransferRequest;
 import com.banking.entity.Customer;
 import com.banking.util.annotation.CheckBalance;
 import jakarta.validation.ConstraintValidator;
@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
-public class CheckBalanceValidator implements ConstraintValidator<CheckBalance, PurchaseRequest> {
+public class CheckBalanceValidator implements ConstraintValidator<CheckBalance, MoneyTransferRequest> {
 
     private final CustomerRepository repository;
 
     @Override
-    public boolean isValid(PurchaseRequest purchaseRequest, ConstraintValidatorContext constraintValidatorContext) {
-        Customer customer= repository.findById(purchaseRequest.senderId()).orElse(new Customer());
-        return customer.getBalance().compareTo(purchaseRequest.amount())>=0;
+    public boolean isValid(MoneyTransferRequest transfer, ConstraintValidatorContext constraintValidatorContext) {
+        Customer customer= repository.findById(transfer.senderId()).orElse(new Customer());
+        return customer.getBalance().compareTo(transfer.amount())>=0;
     }
 }
