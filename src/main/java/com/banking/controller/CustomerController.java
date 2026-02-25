@@ -49,7 +49,7 @@ public class CustomerController {
         BigDecimal balance = customerServiceInter.getBalance(id);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(new GenericResponse("Balance: " + balance));
     }
 

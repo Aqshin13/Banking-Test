@@ -29,7 +29,7 @@ public class TransactionController {
                 Transaction.TransactionType.TOP_UP,
                 TopicName.TOPUP_TOPIC.getName());
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.ACCEPTED)
                 .body(new GenericResponse("Your  request is being processed"));
     }
 
@@ -40,7 +40,7 @@ public class TransactionController {
                 Transaction.TransactionType.PURCHASE,
                 TopicName.PURCHASE.getName());
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.ACCEPTED)
                 .body(new GenericResponse("Your  request is being processed"));
     }
 
@@ -49,7 +49,7 @@ public class TransactionController {
     public ResponseEntity<GenericResponse> refund(@PathVariable Long id) {
         transactionServiceInter.createRefund(id);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.ACCEPTED)
                 .body(new GenericResponse("Your  request is being processed"));
     }
 
